@@ -58,10 +58,20 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    # Create a list of numerical datatypes
+    numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+
+    # Filter dataframe to contain only numerical values
+    newdf = feature_vector_df.select_dtypes(include=numerics)
+
+    # Remove troublesome features from dataset
+   #newdf = newdf.drop('Valencia_pressure', axis = 'columns')
+    newdf = newdf.drop("Unnamed: 0", axis = 'columns')
+
+    #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
     # ------------------------------------------------------------------------
 
-    return predict_vector
+    return newdf
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
